@@ -24,38 +24,38 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.abdosharaf.stopwatch.service.ServiceHelper
+import com.abdosharaf.stopwatch.service.StopwatchService
+import com.abdosharaf.stopwatch.service.StopwatchState
 import com.abdosharaf.stopwatch.ui.theme.Blue
 import com.abdosharaf.stopwatch.ui.theme.Dark
 import com.abdosharaf.stopwatch.ui.theme.Light
 import com.abdosharaf.stopwatch.ui.theme.Red
+import com.abdosharaf.stopwatch.utils.Constants.ACTION_SERVICE_CANCEL
+import com.abdosharaf.stopwatch.utils.Constants.ACTION_SERVICE_START
+import com.abdosharaf.stopwatch.utils.Constants.ACTION_SERVICE_STOP
 
 @Preview(showBackground = true)
 @Composable
 fun MainContentPreview() {
-    MainContent()
+    MainContent(StopwatchService())
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainContent() {
-    // TODO: Remove These!
-    val hours by remember {
-        mutableStateOf("00")
-    }
-    val minutes by remember {
-        mutableStateOf("00")
-    }
-    val seconds by remember {
-        mutableStateOf("00")
-    }
+fun MainContent(stopwatchService: StopwatchService) {
+    val context = LocalContext.current
+    val hours by stopwatchService.hours
+    val minutes by stopwatchService.minutes
+    val seconds by stopwatchService.seconds
+    val currentState by stopwatchService.currentState
 
     Column(
         modifier = Modifier
@@ -111,33 +111,39 @@ fun MainContent() {
         }
 
         Row(modifier = Modifier.weight(1f)) {
-            // TODO: Change Button Color & Text!
             Button(
                 modifier = Modifier
                     .fillMaxHeight(0.8f)
                     .weight(1f),
                 onClick = {
-                    // TODO: Implement Start/Stop Button!
+                    ServiceHelper.triggerForegroundService(
+                        context = context,
+                        action = if (currentState == StopwatchState.Started) ACTION_SERVICE_STOP
+                        else ACTION_SERVICE_START
+                    )
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Blue,
+                    containerColor = if (currentState == StopwatchState.Started) Red else Blue,
                     contentColor = Color.White
                 )
             ) {
                 Text(
-                    text = "Start"
+                    text = if (currentState == StopwatchState.Started) "Stop"
+                    else if ((currentState == StopwatchState.Stopped)) "Resume"
+                    else "Start"
                 )
             }
 
             Spacer(modifier = Modifier.width(30.dp))
 
-            // TODO: Change Button Color!
             Button(
                 modifier = Modifier
                     .fillMaxHeight(0.8f)
                     .weight(1f),
                 onClick = {
-                    // TODO: Implement Cancel Button!
+                    ServiceHelper.triggerForegroundService(
+                        context = context, action = ACTION_SERVICE_CANCEL
+                    )
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Red,
@@ -145,7 +151,7 @@ fun MainContent() {
                     disabledContainerColor = Light,
                     disabledContentColor = Dark
                 ),
-                enabled = false
+                enabled = seconds != "00" && currentState != StopwatchState.Started
             ) {
                 Text(text = "Cancel")
             }

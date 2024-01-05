@@ -72,4 +72,10 @@ dependencies {
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
+
+    // Splash API
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // System UI Controller
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
 }
