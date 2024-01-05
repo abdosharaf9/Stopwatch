@@ -27,6 +27,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private var showSplash = true
+
     private var isBound by mutableStateOf(false)
     private lateinit var stopwatchService: StopwatchService
 
@@ -52,7 +54,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        installSplashScreen()
+        installSplashScreen().setKeepOnScreenCondition {
+            showSplash
+        }
 
         setContent {
             StopwatchTheme {
@@ -61,7 +65,9 @@ class MainActivity : ComponentActivity() {
                 systemUiController.setNavigationBarColor(color = Color.Black)
 
                 if (isBound) {
-                    MainContent(stopwatchService = stopwatchService)
+                    MainContent(stopwatchService = stopwatchService) {
+                        showSplash = false
+                    }
                 }
             }
         }

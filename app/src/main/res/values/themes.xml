@@ -6,7 +6,7 @@
     <style name="Theme.CustomSplashScreenTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#167AF6</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/stopwatch_splash</item>
-        <item name="windowSplashScreenAnimationDuration">600</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
         <item name="postSplashScreenTheme">@style/Theme.Stopwatch</item>
     </style>
 </resources>

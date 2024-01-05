@@ -23,6 +23,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,21 +42,27 @@ import com.abdosharaf.stopwatch.ui.theme.Red
 import com.abdosharaf.stopwatch.utils.Constants.ACTION_SERVICE_CANCEL
 import com.abdosharaf.stopwatch.utils.Constants.ACTION_SERVICE_START
 import com.abdosharaf.stopwatch.utils.Constants.ACTION_SERVICE_STOP
+import kotlinx.coroutines.delay
 
 @Preview(showBackground = true)
 @Composable
 fun MainContentPreview() {
-    MainContent(StopwatchService())
+    MainContent(StopwatchService()) {}
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MainContent(stopwatchService: StopwatchService) {
+fun MainContent(stopwatchService: StopwatchService, hideSplash: () -> Unit) {
     val context = LocalContext.current
     val hours by stopwatchService.hours
     val minutes by stopwatchService.minutes
     val seconds by stopwatchService.seconds
     val currentState by stopwatchService.currentState
+
+    LaunchedEffect(key1 = true) {
+        delay(1000L)
+        hideSplash()
+    }
 
     Column(
         modifier = Modifier
