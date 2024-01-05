@@ -1,0 +1,18 @@
+package com.abdosharaf.stopwatch.utils
+
+object Constants {
+    const val ACTION_SERVICE_START = "ACTION SERVICE START"
+    const val ACTION_SERVICE_STOP = "ACTION SERVICE STOP"
+    const val ACTION_SERVICE_CANCEL = "ACTION SERVICE CANCEL"
+
+    const val STOPWATCH_STATE = "STOPWATCH_STATE"
+
+    const val NOTIFICATION_CHANNEL_ID = "STOPWATCH NOTIFICATION 10"
+    const val NOTIFICATION_CHANNEL_NAME = "STOPWATCH NOTIFICATION"
+    const val NOTIFICATION_ID = 10
+
+    const val CLICK_REQUEST_CODE = 100
+    const val CANCEL_REQUEST_CODE = 101
+    const val STOP_REQUEST_CODE = 102
+    const val RESUME_REQUEST_CODE = 102
+}
